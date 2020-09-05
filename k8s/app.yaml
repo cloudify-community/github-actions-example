@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'cfy-test-app'
+spec:
+  selector:
+    matchLabels:
+      app: cfy-test
+      manager: cloudify
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cfy-test
+        manager: cloudify
+    spec:
+      containers:
+      - name: 'cfy-test-app'
+        image: jcornutt/cloudify:latest
+        ports:
+        - containerPort: 8080
+          name: http-server
+        resources:
+          limits:
+            cpu: 1
+            memory: 128Mi
+          requests:
+            cpu: 1
+            memory: 128Mi

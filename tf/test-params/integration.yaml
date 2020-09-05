@@ -1,0 +1,5 @@
+aws_region: us-east-1
+ami_id: ami-03248a0341eadb1f1
+instance_type: t2.medium
+admin_user: centos
+admin_key_public: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwqTUMzGcTTTqL2h5cy+iCspNNbFvRg+hKtvXuQbeH/07pvzpNQb2WgHuP1/4neNF7FtdJ+UPTIMQJ42+wBFQC5CY6h1cLiOnZ4lkZYZaeWsPuJa8K7t0Lh7v95yjU6q2nh6SVPZy/KCNuELeCZ9gS8rNGo9PwfG8ZKJJt9j3pSOECHlOP//Ev4yIPDkQKpPQTUWg8Z/BaahKAZ8H0aYu0VnZampSjQa7xlfCJS9rgreDliF44yhyPs0t0mS73i22kv03ztmxKm1Bc1//LDJbgzUnqaoCsA4NuvSkGAgZVKjZjJHMVzM/ED8nxbLYb85vj0e8OEH8v/59VTiOezJO1"

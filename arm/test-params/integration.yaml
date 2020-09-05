@@ -1,0 +1,18 @@
+location: centralus
+vnet_name: isaavnsuf
+subnet_name: isaacsnsuf
+vm_size: Standard_B1s
+image:
+  publisher: OpenLogic
+  offer: CentOS
+  sku: "7.6"
+  version: latest
+nsg_name: isaacnsgsuf
+public_ip_name: isacipsuf
+storage_account_name: isaacsasuf
+vm_name: isaacvmsuf
+nic_name: isaacnicsuf
+ip_config_name: isaacipcfgsuf
+priority: Regular
+admin_user: centos
+public_key_data: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwqTUMzGcTTTqL2h5cy+iCspNNbFvRg+hKtvXuQbeH/07pvzpNQb2WgHuP1/4neNF7FtdJ+UPTIMQJ42+wBFQC5CY6h1cLiOnZ4lkZYZaeWsPuJa8K7t0Lh7v95yjU6q2nh6SVPZy/KCNuELeCZ9gS8rNGo9PwfG8ZKJJt9j3pSOECHlOP//Ev4yIPDkQKpPQTUWg8Z/BaahKAZ8H0aYu0VnZampSjQa7xlfCJS9rgreDliF44yhyPs0t0mS73i22kv03ztmxKm1Bc1//LDJbgzUnqaoCsA4NuvSkGAgZVKjZjJHMVzM/ED8nxbLYb85vj0e8OEH8v/59VTiOezJO1

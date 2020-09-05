@@ -1,0 +1,131 @@
+on: [push]
+jobs:
+  simple:
+    runs-on: ubuntu-latest
+    name: Test a simple blueprint
+    steps:
+      - name: Checkout code
+        id: code-checkout
+        uses: actions/checkout@v2
+      - name: Create environment
+        id: create-environment
+        uses: isaac-s/create-environment-action@v1
+        with:
+          environment-name: "test-simple-$GITHUB_RUN_ID"
+          blueprint: "simple/blueprint.yaml"
+          outputs-file: env-data.json
+      - name: Delete environment
+        id: delete-environment
+        uses: isaac-s/delete-environment-action@v1
+        with:
+          environment-name: "test-simple-$GITHUB_RUN_ID"
+  cloudformation:
+    runs-on: ubuntu-latest
+    name: Test a CloudFormation template
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+    steps:
+      - name: Checkout code
+        id: code-checkout
+        uses: actions/checkout@v2
+      - name: Create environment
+        id: create-environment
+        uses: isaac-s/cloudformation-action@v1
+        with:
+          environment-name: "test-cfn-$GITHUB_RUN_ID"
+          stack-name: "githubcfnstack-$GITHUB_RUN_ID"
+          template-file: cfn/stack.yaml
+          parameters-file: cfn/test-params/integration.yaml
+          outputs-file: env-data.json
+      - name: Delete environment
+        id: delete-environment
+        uses: isaac-s/delete-environment-action@v1
+        with:
+          environment-name: "test-cfn-$GITHUB_RUN_ID"
+  arm:
+    runs-on: ubuntu-latest
+    name: Test an Azure ARM template
+    env:
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_CLIENT_ID: ${{ secrets. AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+    steps:
+      - name: Checkout code
+        id: code-checkout
+        uses: actions/checkout@v2
+      - name: Create environment
+        id: create-environment
+        uses: isaac-s/arm-action@v1
+        with:
+          environment-name: "test-arm-$GITHUB_RUN_ID"
+          resource-group: "githubarmrg$GITHUB_RUN_ID"
+          location: centralus
+          template-file: arm/environment.json
+          parameters-file: arm/test-params/integration.yaml
+          outputs-file: env-data.json
+      - name: Delete environment
+        id: delete-environment
+        uses: isaac-s/delete-environment-action@v1
+        with:
+          environment-name: "test-arm-$GITHUB_RUN_ID"
+  terraform:
+    runs-on: ubuntu-latest
+    name: Test a Terraform template
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+    steps:
+      - name: Checkout code
+        id: code-checkout
+        uses: actions/checkout@v2
+      - name: Create module archive
+        run: tar -cvzf /tmp/terraform-module.tar.gz -C tf/modules/ .
+      - name: Upload to S3
+        run: aws s3 cp /tmp/terraform-module.tar.gz s3://cloudify-cicd-public/
+      - name: Create environment
+        id: create-environment
+        uses: isaac-s/terraform-action@v1
+        with:
+          environment-name: "test-terraform-$GITHUB_RUN_ID"
+          module-file: https://cloudify-cicd-public.s3.amazonaws.com/terraform-module.tar.gz
+          variables-file: tf/test-params/integration.yaml
+          environment-mapping: AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+          outputs-file: env-data.json
+      - name: Delete environment
+        id: delete-environment
+        uses: isaac-s/delete-environment-action@v1
+        with:
+          environment-name: "test-terraform-$GITHUB_RUN_ID"
+  kubernetes:
+    runs-on: ubuntu-latest
+    name: Test a Kubernetes application
+    steps:
+      - name: Checkout code
+        id: code-checkout
+        uses: actions/checkout@v2
+      - name: Create environment
+        id: create-environment
+        uses: isaac-s/kubernetes-action@v1
+        with:
+          environment-name: "test-k8s-$GITHUB_RUN_ID"
+          token: ${{ secrets.KUBERNETES_TOKEN }}
+          master-host: ${{ secrets.KUBERNETES_MASTER_HOST }}
+          namespace: default
+          app-definition-file: k8s/app.yaml
+          skip-ssl-verification: true
+          outputs-file: env-data.json
+      - name: Delete environment
+        id: delete-environment
+        uses: isaac-s/delete-environment-action@v1
+        with:
+          environment-name: "test-k8s-$GITHUB_RUN_ID"
+env:
+  CLOUDIFY_HOST: ${{ secrets.CLOUDIFY_HOST }}
+  CLOUDIFY_USERNAME: ${{ secrets.CLOUDIFY_USERNAME }}
+  CLOUDIFY_PASSWORD: ${{ secrets.CLOUDIFY_PASSWORD }}
+  CLOUDIFY_SSL: ${{ secrets.CLOUDIFY_SSL }}
+  CLOUDIFY_SSL_TRUST_ALL: ${{ secrets.CLOUDIFY_SSL_TRUST_ALL }}

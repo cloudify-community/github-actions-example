@@ -1,0 +1,5 @@
+AmiId: ami-03248a0341eadb1f1
+InstanceType: t2.small
+KeyName: isaac
+VpcCIDR: 172.30.0.0/16
+SubnetCIDR: 172.30.0.0/24
