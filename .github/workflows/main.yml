@@ -9,14 +9,14 @@ jobs:
         uses: actions/checkout@v2
       - name: Create environment
         id: create-environment
-        uses: isaac-s/create-environment-action@v1
+        uses: cloudify-cosmo/create-environment-action@v1.0-alpha
         with:
           environment-name: "test-simple-$GITHUB_RUN_ID"
           blueprint: "simple/blueprint.yaml"
           outputs-file: env-data.json
       - name: Delete environment
         id: delete-environment
-        uses: isaac-s/delete-environment-action@v1
+        uses: cloudify-cosmo/delete-environment-action@v1.0-alpha
         with:
           environment-name: "test-simple-$GITHUB_RUN_ID"
   cloudformation:
@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Create environment
         id: create-environment
-        uses: isaac-s/cloudformation-action@v1
+        uses: cloudify-cosmo/cloudformation-action@v1.0-alpha
         with:
           environment-name: "test-cfn-$GITHUB_RUN_ID"
           stack-name: "githubcfnstack-$GITHUB_RUN_ID"
@@ -41,7 +41,7 @@ jobs:
           outputs-file: env-data.json
       - name: Delete environment
         id: delete-environment
-        uses: isaac-s/delete-environment-action@v1
+        uses: cloudify-cosmo/delete-environment-action@v1.0-alpha
         with:
           environment-name: "test-cfn-$GITHUB_RUN_ID"
   arm:
@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Create environment
         id: create-environment
-        uses: isaac-s/arm-action@v1
+        uses: cloudify-cosmo/arm-action@v1.0-alpha
         with:
           environment-name: "test-arm-$GITHUB_RUN_ID"
           resource-group: "githubarmrg$GITHUB_RUN_ID"
@@ -68,7 +68,7 @@ jobs:
           outputs-file: env-data.json
       - name: Delete environment
         id: delete-environment
-        uses: isaac-s/delete-environment-action@v1
+        uses: cloudify-cosmo/delete-environment-action@v1.0-alpha
         with:
           environment-name: "test-arm-$GITHUB_RUN_ID"
   terraform:
@@ -88,7 +88,7 @@ jobs:
         run: aws s3 cp /tmp/terraform-module.tar.gz s3://cloudify-cicd-public/
       - name: Create environment
         id: create-environment
-        uses: isaac-s/terraform-action@v1
+        uses: cloudify-cosmo/terraform-action@v1.0-alpha
         with:
           environment-name: "test-terraform-$GITHUB_RUN_ID"
           module-file: https://cloudify-cicd-public.s3.amazonaws.com/terraform-module.tar.gz
@@ -97,7 +97,7 @@ jobs:
           outputs-file: env-data.json
       - name: Delete environment
         id: delete-environment
-        uses: isaac-s/delete-environment-action@v1
+        uses: cloudify-cosmo/delete-environment-action@v1.0-alpha
         with:
           environment-name: "test-terraform-$GITHUB_RUN_ID"
   kubernetes:
@@ -109,7 +109,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Create environment
         id: create-environment
-        uses: isaac-s/kubernetes-action@v1
+        uses: cloudify-cosmo/kubernetes-action@v1.0-alpha
         with:
           environment-name: "test-k8s-$GITHUB_RUN_ID"
           token: ${{ secrets.KUBERNETES_TOKEN }}
@@ -120,7 +120,7 @@ jobs:
           outputs-file: env-data.json
       - name: Delete environment
         id: delete-environment
-        uses: isaac-s/delete-environment-action@v1
+        uses: cloudify-cosmo/delete-environment-action@v1.0-alpha
         with:
           environment-name: "test-k8s-$GITHUB_RUN_ID"
 env:
