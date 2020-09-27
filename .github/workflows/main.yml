@@ -5,10 +5,8 @@ jobs:
     name: Test a simple blueprint
     steps:
       - name: Checkout code
-        id: code-checkout
         uses: actions/checkout@v2
       - name: Create environment
-        id: create-environment
         uses: cloudify-cosmo/create-environment-action@v1.0
         with:
           environment-name: "test-simple-$GITHUB_RUN_ID"
@@ -20,7 +18,6 @@ jobs:
           name: simple-env-data
           path: env-data.json
       - name: Delete environment
-        id: delete-environment
         uses: cloudify-cosmo/delete-environment-action@v1.0
         with:
           environment-name: "test-simple-$GITHUB_RUN_ID"
@@ -33,10 +30,8 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
     steps:
       - name: Checkout code
-        id: code-checkout
         uses: actions/checkout@v2
       - name: Create environment
-        id: create-environment
         uses: cloudify-cosmo/cloudformation-action@v1.0
         with:
           environment-name: "test-cfn-$GITHUB_RUN_ID"
@@ -50,7 +45,6 @@ jobs:
           name: cloudformation-env-data
           path: env-data.json
       - name: Delete environment
-        id: delete-environment
         uses: cloudify-cosmo/delete-environment-action@v1.0
         with:
           environment-name: "test-cfn-$GITHUB_RUN_ID"
@@ -64,10 +58,8 @@ jobs:
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
     steps:
       - name: Checkout code
-        id: code-checkout
         uses: actions/checkout@v2
       - name: Create environment
-        id: create-environment
         uses: cloudify-cosmo/arm-action@v1.0
         with:
           environment-name: "test-arm-$GITHUB_RUN_ID"
@@ -82,7 +74,6 @@ jobs:
           name: arm-env-data
           path: env-data.json
       - name: Delete environment
-        id: delete-environment
         uses: cloudify-cosmo/delete-environment-action@v1.0
         with:
           environment-name: "test-arm-$GITHUB_RUN_ID"
@@ -94,14 +85,14 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - name: Checkout code
-        id: code-checkout
         uses: actions/checkout@v2
       - name: Create module archive
         run: tar -cvzf /tmp/terraform-module.tar.gz -C tf/modules/ .
+      - name: Install AWS CLI
+        run: pip install awscli
       - name: Upload to S3
         run: aws s3 cp /tmp/terraform-module.tar.gz s3://cloudify-cicd-public/
       - name: Create environment
-        id: create-environment
         uses: cloudify-cosmo/terraform-action@v1.0
         with:
           environment-name: "test-terraform-$GITHUB_RUN_ID"
@@ -115,7 +106,6 @@ jobs:
           name: terraform-env-data
           path: env-data.json
       - name: Delete environment
-        id: delete-environment
         uses: cloudify-cosmo/delete-environment-action@v1.0
         with:
           environment-name: "test-terraform-$GITHUB_RUN_ID"
@@ -124,10 +114,8 @@ jobs:
     name: Test a Kubernetes application
     steps:
       - name: Checkout code
-        id: code-checkout
         uses: actions/checkout@v2
       - name: Create environment
-        id: create-environment
         uses: cloudify-cosmo/kubernetes-action@v1.0
         with:
           environment-name: "test-k8s-$GITHUB_RUN_ID"
@@ -143,7 +131,6 @@ jobs:
           name: kubernetes-env-data
           path: env-data.json
       - name: Delete environment
-        id: delete-environment
         uses: cloudify-cosmo/delete-environment-action@v1.0
         with:
           environment-name: "test-k8s-$GITHUB_RUN_ID"
