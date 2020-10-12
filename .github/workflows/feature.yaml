@@ -1,0 +1,19 @@
+on:
+  push:
+    branches-ignore: [ master ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+      - name: Test CLI
+        uses: isaac-s/cli-action@v1.0
+        with:
+          command: "blueprints list"
+env:
+  CLOUDIFY_HOST: ${{ secrets.CLOUDIFY_HOST }}
+  CLOUDIFY_USERNAME: ${{ secrets.CLOUDIFY_USERNAME }}
+  CLOUDIFY_PASSWORD: ${{ secrets.CLOUDIFY_PASSWORD }}
+  CLOUDIFY_SSL: ${{ secrets.CLOUDIFY_SSL }}
+  CLOUDIFY_SSL_TRUST_ALL: ${{ secrets.CLOUDIFY_SSL_TRUST_ALL }}
+
