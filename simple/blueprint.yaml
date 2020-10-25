@@ -9,7 +9,7 @@ node_templates:
     interfaces:
       cloudify.interfaces.lifecycle:
         create:
-          implementation: resources/app.yaml
+          implementation: scripts/hello.py
           executor: central_deployment_agent
 
 outputs:
